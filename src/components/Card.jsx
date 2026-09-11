@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { FaInstagram, FaYoutube } from 'react-icons/fa'
-import { HiArrowUpRight, HiBriefcase } from 'react-icons/hi2'
+import { HiArrowUpRight, HiBriefcase, HiBookOpen } from 'react-icons/hi2'
 import { HiCamera } from 'react-icons/hi'
 import { HiSparkles } from 'react-icons/hi2'
 
@@ -35,6 +35,12 @@ const links = [
     sub: 'Upwork · Freelance',
     href: 'https://www.upwork.com/freelancers/~01c75936d92f32b5de',
     icon: HiBriefcase,
+  },
+  {
+    label: 'Free Guides',
+    sub: 'Claude, for real life',
+    href: 'https://sofarcam.vercel.app/guides',
+    icon: HiBookOpen,
   },
   {
     label: 'SofarSeven AI',
