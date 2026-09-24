@@ -271,6 +271,20 @@ export default function Tour() {
     return () => { middle.disconnect(); top.disconnect() }
   }, [simple])
 
+  // Every chapter has its own link (/#journey): open on the linked chapter,
+  // then keep the address in step with the chapter you're on.
+  useEffect(() => {
+    const i = CHAPTERS.findIndex((c) => `#${c.id}` === window.location.hash)
+    if (i > 0) sections.current[i]?.scrollIntoView({ block: 'start' })
+  }, [])
+
+  useEffect(() => {
+    const hash = simple || active === 0 ? '' : `#${CHAPTERS[active].id}`
+    if (window.location.hash !== hash) {
+      window.history.replaceState(null, '', hash || window.location.pathname + window.location.search)
+    }
+  }, [active, simple])
+
   useEffect(() => {
     const d = menuRef.current
     if (!d) return
@@ -308,6 +322,7 @@ export default function Tour() {
 
   const sectionProps = (i) => ({
     ref: (el) => { sections.current[i] = el },
+    id: CHAPTERS[i].id,
     'data-index': i,
     'data-theme': CHAPTERS[i].theme,
     'aria-label': CHAPTERS[i].label,
@@ -361,7 +376,7 @@ export default function Tour() {
                 <button type="button" className="t-btn" onClick={() => go(1)}>Take the tour</button>
                 <button type="button" className="t-btn t-btn--ghost" onClick={() => setMenuOpen(true)}>See all links</button>
               </div>
-              <p className="t-hint">Tap anywhere or scroll to keep going.</p>
+              <p className="t-hint"><span className="t-hint-touch">Tap</span><span className="t-hint-mouse">Click</span> anywhere or scroll to keep going.</p>
             </div>
           </section>
 
@@ -427,9 +442,9 @@ export default function Tour() {
             <ol className="t-menu-chapters">
               {CHAPTERS.map((c, i) => (
                 <li key={c.id}>
-                  <button type="button" onClick={() => { setMenuOpen(false); go(i) }}>
+                  <a href={`#${c.id}`} onClick={(e) => { e.preventDefault(); setMenuOpen(false); go(i) }}>
                     <span className="t-menu-num">{i + 1}</span>{c.label}
-                  </button>
+                  </a>
                 </li>
               ))}
             </ol>
