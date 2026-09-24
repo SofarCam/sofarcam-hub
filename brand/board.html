@@ -1,0 +1,255 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<style>
+  @font-face { font-family: "Unbounded"; src: url("../node_modules/@fontsource-variable/unbounded/files/unbounded-latin-wght-normal.woff2") format("woff2"); font-weight: 200 900; }
+  @font-face { font-family: "Hanken"; src: url("../node_modules/@fontsource-variable/hanken-grotesk/files/hanken-grotesk-latin-wght-normal.woff2") format("woff2"); font-weight: 100 900; }
+  :root {
+    --ink: #121214; --cobalt: #2b4eff; --deep: #1b2fb3; --light: #8da2ff; --label: #62625e;
+    --paper: #f4f4f1; --canvas: #0a0a0c;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { width: 2400px; height: 1500px; background: var(--canvas); font-family: "Hanken", sans-serif; color: #fff; -webkit-font-smoothing: antialiased; }
+  .board { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); gap: 20px; padding: 40px; height: 100%; }
+  .p { position: relative; overflow: hidden; border-radius: 14px; }
+  .meta { position: absolute; inset: 22px 26px auto; display: flex; justify-content: space-between; font-size: 13px; letter-spacing: 0.18em; text-transform: uppercase; opacity: 0.55; z-index: 3; }
+  .display { font-family: "Unbounded", sans-serif; font-weight: 700; letter-spacing: -0.025em; line-height: 1.02; }
+  .dark { background: var(--ink); }
+  .paper { background: var(--paper); color: var(--ink); }
+  .cobalt { background: var(--cobalt); }
+
+  /* 01 cover */
+  .cover { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 26px; }
+  .cover .word { font-size: 50px; }
+  .cover .role { font-size: 15px; letter-spacing: 0.28em; text-transform: uppercase; color: #a9a9b3; }
+
+  /* 02 construction */
+  .construct svg { position: absolute; inset: 0; }
+  .construct .note { position: absolute; left: 26px; bottom: 22px; font-size: 15px; color: var(--label); }
+  .construct .note b { color: var(--ink); }
+  .mono { font-family: "DejaVu Sans Mono", monospace; }
+
+  /* 03 digital */
+  .digital { background: #19191e; }
+  .digital .left { position: absolute; left: 40px; top: 96px; display: flex; flex-direction: column; gap: 26px; }
+  .icon { width: 118px; height: 118px; border-radius: 28px; background: var(--cobalt); display: grid; place-items: center; box-shadow: 0 14px 34px rgba(43, 78, 255, 0.35); }
+  .url { display: inline-flex; align-items: center; gap: 10px; padding: 12px 18px; border-radius: 999px; background: #26262d; font-size: 17px; color: #d8d8de; }
+  .url i { width: 10px; height: 10px; border-radius: 999px; background: var(--light); }
+  .digital .caption { font-size: 15px; color: #8f8f99; max-width: 230px; line-height: 1.45; }
+  .phone { position: absolute; right: 56px; top: 64px; width: 262px; height: 568px; border-radius: 40px; padding: 9px; background: #000; box-shadow: 0 0 0 2px #34343c, 0 30px 60px rgba(0, 0, 0, 0.55); }
+  .phone img { width: 100%; height: 100%; object-fit: cover; object-position: top; border-radius: 32px; display: block; }
+
+  /* 04 essence */
+  .essence { display: flex; flex-direction: column; justify-content: flex-end; padding: 0 40px 40px; }
+  .essence .line { font-size: 92px; }
+  .essence .line span { color: var(--ink); }
+  .essence .sign { margin-top: 22px; font-size: 16px; letter-spacing: 0.02em; opacity: 0.85; }
+
+  /* 05 color */
+  .colors { display: grid; grid-template-columns: 1.5fr 1.5fr 1fr 1fr; gap: 12px; position: absolute; inset: 70px 26px 26px; }
+  .sw { border-radius: 10px; display: flex; flex-direction: column; justify-content: flex-end; padding: 14px; font-size: 14px; line-height: 1.35; }
+  .sw b { font-size: 16px; display: block; }
+  .sw .hex { opacity: 0.75; }
+  .stack { display: grid; gap: 12px; }
+
+  /* 06 type */
+  .type { display: flex; align-items: center; gap: 42px; padding: 0 40px; }
+  .type .aa { font-size: 210px; line-height: 0.9; }
+  .type .aa span { color: var(--cobalt); }
+  .spec { display: flex; flex-direction: column; gap: 22px; }
+  .spec .name1 { font-family: "Unbounded"; font-weight: 700; font-size: 30px; letter-spacing: -0.02em; }
+  .spec .name2 { font-weight: 600; font-size: 30px; }
+  .spec small { display: block; margin-top: 4px; font-size: 15px; color: #8f8f99; }
+  .spec .abc { font-size: 17px; color: #c9c9d0; letter-spacing: 0.04em; }
+
+  /* 07 physical */
+  .physical { background: #e6e6e1; }
+  .card { position: absolute; width: 350px; height: 200px; border-radius: 12px; padding: 24px; box-shadow: 0 2px 3px rgba(0,0,0,.12), 0 22px 40px rgba(0, 0, 0, 0.24); }
+  .card.front { background: var(--ink); left: 70px; top: 150px; transform: rotate(-7deg); display: flex; flex-direction: column; justify-content: space-between; }
+  .card.front .n { font-family: "Unbounded"; font-weight: 700; font-size: 22px; letter-spacing: -0.02em; }
+  .card.front .r { font-size: 13px; letter-spacing: 0.2em; text-transform: uppercase; color: #a9a9b3; margin-top: 6px; }
+  .card.back { background: var(--cobalt); left: 340px; top: 100px; transform: rotate(5deg); display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-end; text-align: right; gap: 6px; font-size: 16px; overflow: hidden; }
+  .card.back .big { position: absolute; left: 70px; top: -70px; opacity: 0.2; }
+  .card.back span { position: relative; }
+  .card.back .h { font-weight: 700; }
+
+  /* 08 image */
+  .image img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 28%; }
+  .image .grain { position: absolute; inset: 0; opacity: 0.16; mix-blend-mode: overlay; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
+  .image .shade { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.6), rgba(0,0,0,0) 45%); }
+  .image .meta { opacity: 0.8; text-shadow: 0 1px 6px rgba(0,0,0,.6); }
+  .image .chip { position: absolute; left: 26px; bottom: 24px; display: inline-flex; align-items: center; gap: 10px; padding: 10px 16px; border-radius: 999px; background: rgba(18,18,20,.72); font-size: 16px; font-weight: 600; }
+  .image .chip i { width: 10px; height: 10px; border-radius: 999px; background: var(--cobalt); }
+
+  /* 09 system */
+  .system { padding: 64px 40px 30px; display: flex; flex-direction: column; justify-content: center; gap: 24px; }
+  .chips { display: flex; gap: 8px; }
+  .chips span { padding: 7px 12px; border-radius: 8px; background: #e8e8ec; font-size: 14px; color: var(--ink); }
+  .bars { display: flex; gap: 6px; }
+  .bars i { flex: 1; height: 4px; border-radius: 4px; background: #d9d9de; }
+  .bars i.on { background: var(--ink); }
+  .who { display: flex; align-items: center; gap: 12px; }
+  .who .av { width: 46px; height: 46px; border-radius: 999px; overflow: hidden; box-shadow: 0 0 0 2px var(--ink); }
+  .who .av img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
+  .who .t { flex: 1; line-height: 1.25; }
+  .who .t b { display: block; font-size: 17px; }
+  .who .t span { font-size: 15px; color: var(--label); }
+  .pill { display: inline-flex; align-items: center; justify-content: center; height: 52px; padding: 0 26px; border-radius: 999px; font-weight: 700; font-size: 17px; border: 2px solid transparent; }
+  .pill.solid { background: var(--cobalt); color: #fff; }
+  .pill.line { border-color: var(--ink); }
+  .pill.soft { height: 42px; padding: 0 18px; background: #eeeef1; font-size: 15px; }
+  .row { display: flex; align-items: center; gap: 12px; }
+  .round { width: 46px; height: 46px; border-radius: 999px; border: 1.5px solid var(--ink); display: grid; place-items: center; font-size: 22px; }
+  .count { font-size: 16px; font-variant-numeric: tabular-nums; margin: 0 6px; }
+</style>
+</head>
+<body>
+<div class="board">
+
+  <section class="p dark cover">
+    <div class="meta"><span>01</span><span>Mark</span></div>
+    <div data-mark="170" data-fill="#2b4eff" data-bg="#121214"></div>
+    <div class="display word">Cam Currence</div>
+    <div class="role">Photographer · AI engineer</div>
+  </section>
+
+  <section class="p paper construct">
+    <div class="meta"><span>02</span><span>Construction</span></div>
+    <svg id="construct" viewBox="0 0 760 460"></svg>
+    <p class="note"><b>Seven blades, one opening.</b> The lens you shoot through, and the name you know.</p>
+  </section>
+
+  <section class="p digital">
+    <div class="meta"><span>03</span><span>Bio link</span></div>
+    <div class="left">
+      <div class="icon"><div data-mark="84" data-fill="#ffffff" data-bg="#2b4eff"></div></div>
+      <div class="url"><i></i>sofarcam-hub.vercel.app</div>
+      <p class="caption">One link in bio. A tour through the work, the builds, and the people.</p>
+    </div>
+    <div class="phone"><img src="bio-phone.png" alt="" /></div>
+  </section>
+
+  <section class="p cobalt essence">
+    <div class="meta"><span>04</span><span>Essence</span></div>
+    <div class="display line">Shoot it.<br /><span>Build it.</span></div>
+    <div class="sign">Cam Currence · Charlotte, NC</div>
+  </section>
+
+  <section class="p paper">
+    <div class="meta"><span>05</span><span>Color</span></div>
+    <div class="colors">
+      <div class="sw" style="background:#121214;color:#fff"><b>Ink</b><span class="hex mono">#121214</span></div>
+      <div class="sw" style="background:#2b4eff;color:#fff"><b>Cobalt</b><span class="hex mono">#2B4EFF</span></div>
+      <div class="stack">
+        <div class="sw" style="background:#1b2fb3;color:#fff"><b>Deep</b><span class="hex mono">#1B2FB3</span></div>
+        <div class="sw" style="background:#8da2ff;color:#121214"><b>Light</b><span class="hex mono">#8DA2FF</span></div>
+      </div>
+      <div class="stack">
+        <div class="sw" style="background:#fff;color:#121214;box-shadow:inset 0 0 0 1.5px #dcdcd6"><b>Paper</b><span class="hex mono">#FFFFFF</span></div>
+        <div class="sw" style="background:#62625e;color:#fff"><b>Label</b><span class="hex mono">#62625E</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="p dark type">
+    <div class="meta"><span>06</span><span>Type</span></div>
+    <div class="display aa">A<span>a</span></div>
+    <div class="spec">
+      <div><div class="name1">Unbounded</div><small>Headlines and chapter titles</small></div>
+      <div><div class="name2">Hanken Grotesk</div><small>Everything you read</small></div>
+      <div class="abc">ABCDEFGHIJKLM 0123456789</div>
+    </div>
+  </section>
+
+  <section class="p physical">
+    <div class="meta" style="color:#121214"><span>07</span><span>In hand</span></div>
+    <div class="card back">
+      <div class="big" data-mark="220" data-fill="#ffffff" data-bg="#2b4eff"></div>
+      <span class="h">@sofar.cam</span>
+      <span>sofarcam-hub.vercel.app</span>
+    </div>
+    <div class="card front">
+      <div data-mark="54" data-fill="#2b4eff" data-bg="#121214"></div>
+      <div><div class="n">Cam Currence</div><div class="r">Photographer · AI engineer</div></div>
+    </div>
+  </section>
+
+  <section class="p image">
+    <img src="../public/photos/redhair-1400.webp" alt="" />
+    <div class="shade"></div>
+    <div class="grain"></div>
+    <div class="meta"><span>08</span><span>Image</span></div>
+    <div class="chip"><i></i>Bold, warm, editorial</div>
+  </section>
+
+  <section class="p paper system">
+    <div class="meta"><span>09</span><span>System</span></div>
+    <div class="bars"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i></div>
+    <div class="who">
+      <div class="av"><img src="../public/photos/cam-720.webp" alt="" /></div>
+      <div class="t"><b>Cam Currence</b><span>My AI journey</span></div>
+      <span class="pill soft">Menu</span>
+    </div>
+    <div class="row"><span class="pill solid">Take the tour</span><span class="pill line">See all links</span></div>
+    <div class="row"><span class="round">‹</span><span class="count">3 of 7</span><span class="round">›</span></div>
+    <div class="chips mono"><span>/#portraits</span><span>/#journey</span><span>/#built</span><span>/#picks</span></div>
+  </section>
+
+</div>
+
+<script>
+  // Seven-blade aperture: a filled disc, a heptagon opening, and each opening edge
+  // carried out to the rim so the disc reads as seven overlapping blades.
+  const N = 7
+  function geometry(R, rIn, rot = -Math.PI / 2) {
+    const v = [...Array(N)].map((_, k) => {
+      const a = rot + (k * 2 * Math.PI) / N
+      return [rIn * Math.cos(a), rIn * Math.sin(a)]
+    })
+    const cuts = v.map((p, k) => {
+      const q = v[(k + 1) % N]
+      let dx = q[0] - p[0], dy = q[1] - p[1]
+      const len = Math.hypot(dx, dy); dx /= len; dy /= len
+      const b = p[0] * dx + p[1] * dy
+      const t = -b + Math.sqrt(b * b - (p[0] * p[0] + p[1] * p[1] - R * R))
+      return [p, [p[0] + dx * t, p[1] + dy * t]]
+    })
+    return { v, cuts }
+  }
+  function mark(size, fill, bg) {
+    const R = 50, { v, cuts } = geometry(R, 19)
+    const hept = v.map((p) => p.join(',')).join(' ')
+    const lines = cuts.map(([a, b]) => `<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" stroke="${bg}" stroke-width="3.4" stroke-linecap="butt"/>`).join('')
+    return `<svg width="${size}" height="${size}" viewBox="-50 -50 100 100" style="display:block"><circle r="${R}" fill="${fill}"/>${lines}<polygon points="${hept}" fill="${bg}"/></svg>`
+  }
+  document.querySelectorAll('[data-mark]').forEach((el) => { el.innerHTML = mark(+el.dataset.mark, el.dataset.fill, el.dataset.bg) })
+
+  // Construction drawing
+  const svg = document.getElementById('construct')
+  const cx = 250, cy = 238, R = 150, rIn = 57
+  const { v, cuts } = geometry(R, rIn)
+  let s = ''
+  for (let x = 0; x <= 760; x += 38) s += `<line x1="${x}" y1="0" x2="${x}" y2="460" stroke="#e2e2dc" stroke-width="1"/>`
+  for (let y = 0; y <= 460; y += 38) s += `<line x1="0" y1="${y}" x2="760" y2="${y}" stroke="#e2e2dc" stroke-width="1"/>`
+  s += `<g transform="translate(${cx} ${cy})">`
+  s += `<circle r="${R}" fill="none" stroke="#2b4eff" stroke-width="2"/>`
+  s += `<circle r="${rIn}" fill="none" stroke="#8da2ff" stroke-width="1.2" stroke-dasharray="5 5"/>`
+  v.forEach((p) => { s += `<line x1="0" y1="0" x2="${p[0] * R / rIn}" y2="${p[1] * R / rIn}" stroke="#8da2ff" stroke-width="1" stroke-dasharray="3 5"/>` })
+  cuts.forEach(([a, b]) => { s += `<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" stroke="#121214" stroke-width="2"/>` })
+  s += `<polygon points="${v.map((p) => p.join(',')).join(' ')}" fill="rgba(43,78,255,.1)" stroke="#2b4eff" stroke-width="2"/>`
+  v.forEach((p) => { s += `<circle cx="${p[0]}" cy="${p[1]}" r="4" fill="#fff" stroke="#2b4eff" stroke-width="2"/>` })
+  // angle between two neighbouring spokes
+  const a0 = -Math.PI / 2, a1 = a0 + 2 * Math.PI / N, ar = 92
+  s += `<path d="M ${ar * Math.cos(a0)} ${ar * Math.sin(a0)} A ${ar} ${ar} 0 0 1 ${ar * Math.cos(a1)} ${ar * Math.sin(a1)}" fill="none" stroke="#2b4eff" stroke-width="1.5"/>`
+  s += `</g>`
+  const lx = 470
+  s += `<text x="${lx}" y="150" font-family="Unbounded" font-weight="700" font-size="72" fill="#2b4eff" letter-spacing="-2">7</text>`
+  s += `<text x="${lx}" y="186" font-family="DejaVu Sans Mono" font-size="15" fill="#121214">blades</text>`
+  s += `<text x="${lx}" y="238" font-family="DejaVu Sans Mono" font-size="15" fill="#62625e">360° / 7 = 51.43°</text>`
+  s += `<text x="${lx}" y="264" font-family="DejaVu Sans Mono" font-size="15" fill="#62625e">opening  r = 0.38R</text>`
+  s += `<text x="${lx}" y="290" font-family="DejaVu Sans Mono" font-size="15" fill="#62625e">cuts     edge → rim</text>`
+  svg.innerHTML = s
+</script>
+</body>
+</html>
