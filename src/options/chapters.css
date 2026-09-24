@@ -1,0 +1,195 @@
+/* Draft B: "The tour". Full-screen chapters read like Stories; cobalt pulled from the blue-backdrop shoots. */
+.ch {
+  --ch-cobalt: #2b4eff;
+  --ch-display: "Unbounded Variable", system-ui, sans-serif;
+  --ch-body: "Hanken Grotesk Variable", system-ui, sans-serif;
+
+  font-family: var(--ch-body);
+  font-size: 18px;
+  line-height: 1.5;
+  color: #fff;
+  background: #121214;
+}
+:root:has(.ch:not(.ch--list)) { scroll-snap-type: y mandatory; }
+.ch :focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+
+/* Stories-style header: progress you can tap, who you're looking at, and Book */
+.ch-top {
+  position: fixed; inset: 0 0 auto; z-index: 20;
+  padding: calc(8px + env(safe-area-inset-top)) 12px 18px;
+  background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0));
+}
+.ch-progress { list-style: none; display: flex; gap: 4px; }
+.ch-progress li { flex: 1; }
+.ch-progress button {
+  display: block; width: 100%; padding: 8px 0; border: 0; background: none; cursor: pointer;
+}
+.ch-progress button::before {
+  content: ""; display: block; height: 3px; border-radius: 3px;
+  background: rgba(255, 255, 255, 0.38);
+  transition: background-color 0.3s ease;
+}
+.ch-progress button.is-seen::before { background: #fff; }
+.ch-bar { display: flex; align-items: center; gap: 10px; margin-top: 2px; }
+.ch-avatar { width: 38px; height: 38px; border-radius: 999px; overflow: hidden; flex: none; box-shadow: 0 0 0 2px #fff; }
+.ch-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
+.ch-who { display: flex; flex-direction: column; flex: 1; min-width: 0; line-height: 1.25; }
+.ch-name { font-weight: 700; font-size: 15px; }
+.ch-where { font-size: 13px; opacity: 0.85; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ch-mode {
+  min-height: 40px; padding: 0 10px; border: 0; border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16); color: #fff; font: inherit; font-size: 14px; cursor: pointer;
+}
+.ch-book {
+  display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px;
+  border-radius: 999px; background: var(--ch-cobalt); color: #fff; font-weight: 700; font-size: 15px;
+}
+
+/* A chapter is one screen */
+.ch-ch {
+  position: relative;
+  height: 100svh; min-height: 560px;
+  scroll-snap-align: start;
+  overflow: hidden;
+  cursor: default;
+}
+.ch-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.ch-bg--cam { object-position: 50% 30%; }
+.ch-scrim {
+  position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.86) 0%, rgba(0, 0, 0, 0.62) 36%, rgba(0, 0, 0, 0) 64%);
+}
+.ch-scrim--full { background: linear-gradient(to top, rgba(0, 0, 0, 0.88) 10%, rgba(0, 0, 0, 0.55) 60%, rgba(0, 0, 0, 0.35)); }
+.ch-copy {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
+  padding: 0 20px calc(30px + env(safe-area-inset-bottom));
+  max-width: 680px;
+}
+.ch-copy--top { top: calc(96px + env(safe-area-inset-top)); bottom: auto; }
+.ch-title {
+  font-family: var(--ch-display);
+  font-weight: 700;
+  font-size: clamp(34px, 10vw, 76px);
+  line-height: 1.04;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+.ch-title--small { font-size: clamp(28px, 7.6vw, 54px); }
+.ch-text { margin-top: 14px; max-width: 36ch; font-size: 19px; }
+.ch-hint { margin-top: 18px; font-size: 14px; opacity: 0.8; }
+.ch-quote { margin-top: 18px; max-width: 34ch; font-size: 20px; line-height: 1.5; }
+
+.ch-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+.ch-actions--stack { flex-direction: column; max-width: 360px; }
+.ch-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 52px; padding: 0 24px; border: 2px solid transparent; border-radius: 999px;
+  background: var(--ch-cobalt); color: #fff;
+  font: inherit; font-weight: 700; font-size: 17px; cursor: pointer;
+}
+.ch-btn--ghost { background: transparent; border-color: rgba(255, 255, 255, 0.9); }
+.ch-btn--white { background: #fff; color: #1b2fb3; }
+.ch-btn--ghost-dark { background: transparent; border-color: #121214; color: #121214; }
+.ch-link { color: inherit; text-decoration: underline; text-underline-offset: 4px; font-weight: 600; }
+
+/* Portraits: a sideways carousel inside the chapter */
+.ch-ch--gallery::before {
+  content: ""; position: absolute; inset: 0 0 auto; height: 300px; z-index: 1; pointer-events: none;
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
+}
+.ch-carousel {
+  position: absolute; inset: 0;
+  display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
+}
+.ch-carousel::-webkit-scrollbar { display: none; }
+.ch-slide { flex: 0 0 100%; height: 100%; margin: 0; scroll-snap-align: start; }
+.ch-slide img { width: 100%; height: 100%; object-fit: cover; }
+.ch-carousel-bar {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 40px 20px calc(22px + env(safe-area-inset-bottom));
+  background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.7));
+}
+.ch-carousel-caption { font-weight: 700; font-size: 17px; }
+.ch-carousel-controls { display: flex; align-items: center; gap: 12px; font-size: 15px; }
+.ch-round {
+  width: 44px; height: 44px; border-radius: 999px; border: 2px solid #fff;
+  background: rgba(0, 0, 0, 0.3); color: #fff; font-size: 24px; line-height: 1; cursor: pointer;
+}
+.ch-round:disabled { opacity: 0.35; cursor: default; }
+
+/* Big days: three frames together */
+.ch-ch--collage {
+  display: flex; flex-direction: column; gap: 18px;
+  padding: calc(104px + env(safe-area-inset-top)) 14px calc(20px + env(safe-area-inset-bottom));
+  background: #121214;
+}
+.ch-copy--inline { position: static; padding: 0 6px; }
+.ch-collage {
+  flex: 1; min-height: 0;
+  display: grid; grid-template-columns: 1.2fr 1fr; grid-template-rows: 1fr 1fr; gap: 8px;
+}
+.ch-collage img { width: 100%; height: 100%; object-fit: cover; border-radius: 16px; display: block; }
+.ch-collage img:first-child { grid-row: span 2; }
+
+.ch-steps { list-style: none; counter-reset: ch-step; margin-top: 18px; display: grid; gap: 14px; max-width: 40ch; }
+.ch-steps li { position: relative; padding-left: 44px; counter-increment: ch-step; }
+.ch-steps li::before {
+  content: counter(ch-step); position: absolute; left: 0; top: -1px;
+  width: 30px; height: 30px; border-radius: 999px; border: 2px solid #fff;
+  display: grid; place-items: center; font-weight: 700; font-size: 15px;
+}
+
+.ch-projects { list-style: none; margin-top: 18px; border-top: 1px solid rgba(255, 255, 255, 0.35); }
+.ch-projects a {
+  display: flex; flex-direction: column; padding: 14px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+}
+.ch-project-name { font-weight: 700; font-size: 20px; }
+.ch-project-text { font-size: 16px; opacity: 0.88; }
+.ch-projects a:hover .ch-project-name { text-decoration: underline; text-underline-offset: 4px; }
+
+/* Your turn */
+.ch-ch--book { background: var(--ch-cobalt); }
+.ch-ch--book .ch-copy { top: calc(110px + env(safe-area-inset-top)); bottom: auto; }
+.ch-socials { list-style: none; margin-top: 26px; border-top: 1px solid rgba(255, 255, 255, 0.45); max-width: 460px; }
+.ch-socials a {
+  display: flex; justify-content: space-between; gap: 12px; padding: 12px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.45); font-weight: 700; font-size: 16px;
+}
+.ch-socials span { font-weight: 400; opacity: 0.9; overflow: hidden; text-overflow: ellipsis; }
+.ch-foot { margin-top: 22px; font-size: 15px; }
+
+/* List view: the same content as a plain, calm page */
+.ch--list { background: #fff; color: #121214; }
+.ch--list .ch-top { position: sticky; background: #fff; color: #121214; box-shadow: 0 1px 0 #e4e4e8; }
+.ch--list .ch-mode { background: #eeeef2; color: #121214; }
+.ch--list :focus-visible { outline-color: var(--ch-cobalt); }
+.ch-list { max-width: 640px; margin: 0 auto; padding: 28px 20px 64px; }
+.ch-list h1, .ch-list h2 { font-family: var(--ch-display); letter-spacing: -0.02em; line-height: 1.15; }
+.ch-list h1 { font-size: 38px; margin-top: 24px; }
+.ch-list h2 { font-size: 24px; margin-top: 40px; }
+.ch-list p, .ch-list li, .ch-list blockquote { margin-top: 12px; max-width: 60ch; }
+.ch-list ol, .ch-list ul { padding-left: 1.3em; }
+.ch-list ul { list-style: disc; }
+.ch-list ol { list-style: decimal; }
+.ch--end .ch-book { background: #fff; color: #1b2fb3; }
+.ch-list a:not(.ch-btn) { text-decoration: underline; text-underline-offset: 3px; color: #1b2fb3; }
+.ch-list .ch-btn { margin-top: 18px; }
+
+@media (min-width: 900px) {
+  .ch-copy { padding-left: 56px; padding-bottom: 56px; }
+  .ch-top { padding-inline: 24px; }
+  .ch-collage { max-width: 900px; width: 100%; margin: 0 auto; }
+  .ch-copy--inline { max-width: 900px; width: 100%; margin: 0 auto; }
+  /* A tall portrait can't fill a wide screen: sit it beside the words instead */
+  .ch-ch--split { background: #121214; }
+  .ch-ch--split .ch-bg { left: auto; right: 0; width: 50%; }
+  .ch-ch--split .ch-scrim { display: none; }
+  .ch-ch--split .ch-copy { top: 50%; bottom: auto; width: 50%; transform: translateY(-40%); padding-bottom: 0; }
+  .ch-slide { flex-basis: 34%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ch-progress button::before { transition: none; }
+}

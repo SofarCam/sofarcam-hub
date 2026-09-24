@@ -1,255 +1,37 @@
 @import "tailwindcss";
 
-@font-face {
-  font-family: "Archivo";
-  src: url("/fonts/archivo-var-latin.woff2") format("woff2");
-  font-weight: 100 900;
-  font-stretch: 62% 125%;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* Same tokens as sofarcam.vercel.app so the two read as one brand */
-@theme {
-  --color-film: #000000;
-  --color-paper: #ffffff;
-  --color-silver: #f4f4f1;
-  --color-graphite: #8f8f8a;
-  --color-smoke: #5c5c58;
-  --color-rule: #2b2b29;
-  --color-gold: #d4a04a;
-
-  --font-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
-  --font-body: "Archivo", "Helvetica Neue", Arial, sans-serif;
-}
-
+/* Shared base only. Each draft brings its own fonts, colors and layout. */
 @layer base {
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
-
-  body {
-    background: var(--color-film);
-    color: var(--color-silver);
-    font-family: var(--font-body);
-    font-size: 17px;
-    line-height: 1.55;
-    -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
-  }
-
+  html { -webkit-text-size-adjust: 100%; }
+  body { overflow-x: hidden; -webkit-font-smoothing: antialiased; }
   #root { min-height: 100vh; }
-
   a { color: inherit; text-decoration: none; }
-
-  :focus-visible {
-    outline: 2px solid var(--color-gold);
-    outline-offset: 3px;
-  }
-
-  ::selection { background: var(--color-gold); color: #000; }
+  img { max-width: 100%; }
 
   @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
     *, *::before, *::after {
       animation-duration: 0.01ms !important;
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
     }
   }
 }
 
-.type-display {
-  font-family: var(--font-display);
-  font-variation-settings: "wdth" 62;
-  font-weight: 800;
-  line-height: 0.92;
-  letter-spacing: -0.005em;
+/* Draft picker (temporary, only on the preview) */
+.chooser {
+  max-width: 640px; margin: 0 auto; padding: 48px 20px 64px;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: #111; background: #fff;
 }
-
-.type-frame {
-  font-variation-settings: "wdth" 75;
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
+.chooser h1 { font-size: 32px; line-height: 1.15; }
+.chooser-lede { margin-top: 10px; font-size: 17px; line-height: 1.5; color: #444; }
+.chooser ul { list-style: none; margin-top: 28px; display: grid; gap: 14px; }
+.chooser-card {
+  display: grid; grid-template-columns: 96px 1fr; gap: 16px; align-items: center;
+  padding: 12px; border: 1.5px solid #ddd; border-radius: 16px;
 }
-
-.container-page {
-  width: 100%;
-  max-width: 1120px;
-  margin-inline: auto;
-  padding-inline: 20px;
-}
-@media (min-width: 768px) {
-  .container-page { padding-inline: 40px; }
-}
-
-/* Pin the name and portrait beside the scrolling column, but only when the
-   whole column fits on screen; otherwise the portrait's bottom never shows. */
-@media (min-width: 1024px) and (min-height: 900px) {
-  .hero-col { position: sticky; top: 48px; }
-}
-
-/* The portrait, printed with a white border like a proof */
-.print {
-  background: var(--color-paper);
-  padding: 8px 8px 30px;
-  transform: rotate(-1.2deg);
-}
-.print img {
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 4 / 5;
-  object-fit: cover;
-}
-
-/* Contact sheet: black film strips printed on white paper */
-.contact-paper {
-  background: var(--color-paper);
-  padding: 10px 10px 4px;
-  transform: rotate(0.5deg);
-}
-@media (min-width: 768px) {
-  .contact-paper { padding: 18px 18px 10px; }
-}
-.film-strip {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 5px;
-  background: #000;
-  padding: 7px 7px 4px;
-  margin-bottom: 8px;
-}
-@media (min-width: 768px) {
-  .film-strip { gap: 7px; padding: 10px 10px 5px; margin-bottom: 12px; }
-}
-.film-frame img {
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 4 / 5;
-  object-fit: cover;
-}
-.film-number {
-  display: block;
-  padding-top: 4px;
-  font-size: 10px;
-  line-height: 1;
-  color: #c6c6c0;
-}
-@media (min-width: 768px) {
-  .film-number { font-size: 11px; padding-top: 5px; }
-}
-
-/* Buttons */
-.btn-gold {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--color-gold);
-  color: #000;
-  font-weight: 600;
-  font-size: 17px;
-  padding: 15px 24px;
-  border-radius: 2px;
-  transition: background-color 0.15s ease;
-}
-.btn-gold:hover { background: #e2b25e; }
-
-.btn-plain {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #3a3a37;
-  color: var(--color-silver);
-  font-size: 17px;
-  padding: 14px 22px;
-  border-radius: 2px;
-}
-.btn-plain:hover { border-color: var(--color-silver); }
-
-.link-quiet {
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 4px;
-  text-decoration-color: currentColor;
-}
-.link-quiet:hover { text-decoration-color: var(--color-gold); }
-
-/* Numbered rows, one link per row */
-.link-list { list-style: none; border-top: 1px solid var(--color-rule); }
-.link-row {
-  display: grid;
-  grid-template-columns: 2.25rem 1fr;
-  gap: 12px;
-  padding: 18px 0;
-  border-bottom: 1px solid var(--color-rule);
-}
-.link-row-num {
-  font-size: 17px;
-  color: var(--color-graphite);
-  padding-top: 1px;
-}
-.link-row-name {
-  font-size: 19px;
-  font-weight: 600;
-  line-height: 1.3;
-  color: var(--color-silver);
-}
-.link-row-detail {
-  margin-top: 3px;
-  font-size: 15px;
-  line-height: 1.45;
-  color: var(--color-graphite);
-}
-.link-row--plain {
-  grid-template-columns: 1fr auto;
-  align-items: baseline;
-}
-.link-row:hover .link-row-name {
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 4px;
-  text-decoration-color: var(--color-gold);
-}
-
-/* Mobile booking bar, shown between the hero button and the contact section */
-.book-bar {
-  position: fixed;
-  inset-inline: 0;
-  bottom: 0;
-  z-index: 40;
-  padding: 12px 20px calc(12px + env(safe-area-inset-bottom));
-  background: var(--color-film);
-  border-top: 1px solid var(--color-rule);
-  transform: translateY(110%);
-  transition: transform 0.25s ease;
-}
-.book-bar.is-shown { transform: translateY(0); }
-@media (min-width: 1024px) {
-  .book-bar { display: none; }
-}
-
-/* Grease-pencil mark drawn around the selected frame */
-.grease-mark {
-  position: absolute;
-  left: 0;
-  top: 0;
-  overflow: visible;
-  pointer-events: none;
-}
-.grease-mark path {
-  fill: none;
-  stroke: var(--color-gold);
-  stroke-width: 4;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-.grease-mark.is-drawing path {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  animation: grease-draw 0.9s cubic-bezier(0.55, 0.1, 0.35, 1) 0.35s forwards;
-}
-@keyframes grease-draw {
-  to { stroke-dashoffset: 0; }
-}
+.chooser-card:hover { border-color: #111; }
+.chooser-card img { width: 96px; height: 120px; object-fit: cover; border-radius: 10px; }
+.chooser-card strong { display: block; font-size: 19px; }
+.chooser-card span span { display: block; margin-top: 4px; font-size: 15px; line-height: 1.45; color: #444; }
