@@ -23,7 +23,7 @@ export const STYLE_QUOTE =
   'Bold, warm, and editorial. I love golden hour light, real moments, and shots that feel like a movie still.'
 
 export const BIO = [
-  'I’m Cameron Currence, and behind the camera I go by Seven. I’ve photographed people in Charlotte for more than eight years: portraits, fashion, and creative studio work.',
+  'I’m Cameron Currence, and behind the camera I go by Seven. I’ve photographed people in Charlotte for more than 8 years: portraits, fashion, and creative studio work.',
   'I’m also an AI engineer. I build AI agents and tools on Claude, and I share what I learn in free guides and a community on Discord.',
 ]
 

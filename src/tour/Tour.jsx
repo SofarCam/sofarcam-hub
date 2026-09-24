@@ -216,9 +216,9 @@ function Lightbox({ open, onClose, onStep }) {
 
 function SimplePage({ onTour }) {
   return (
-    <main className="t-simple">
+    <main id="main" className="t-simple">
       <button type="button" className="t-btn t-btn--outline" onClick={onTour}>Back to the tour</button>
-      <h1>Hey, I’m Cam.</h1>
+      <h1>Hey, I’m Cam Currence.</h1>
       <p>Photographer and AI engineer in Charlotte, NC. You might know me as Seven.</p>
       <h2>About me</h2>
       {BIO.map((b) => <p key={b}>{b}</p>)}
@@ -320,6 +320,7 @@ export default function Tour() {
 
   return (
     <div className={classes.filter(Boolean).join(' ')}>
+      <a className="t-skip" href="#main">Skip to content</a>
       <header className="t-top">
         {!simple && (
           <ol className="t-progress" aria-label="Tour progress">
@@ -349,12 +350,12 @@ export default function Tour() {
       {simple ? (
         <SimplePage onTour={toggleSimple} />
       ) : (
-        <main>
+        <main id="main">
           <section {...sectionProps(0)} className="t-ch t-ch--photo t-ch--hello">
-            <Photo slug="cam" sizes="100vw" eager className="t-bg t-bg--cam" />
+            <Photo slug="cam" sizes="(min-width: 900px) 50vw, 100vw" eager fetchPriority="high" className="t-bg t-bg--cam" />
             <div className="t-scrim" />
             <div className="t-copy">
-              <h1 className="t-title t-title--hero">Hey, I’m Cam.</h1>
+              <h1 className="t-title t-title--hero">Hey, I’m Cam Currence.</h1>
               <p className="t-text">Photographer and AI engineer in Charlotte, NC. You might know me as Seven.</p>
               <div className="t-actions">
                 <button type="button" className="t-btn" onClick={() => go(1)}>Take the tour</button>

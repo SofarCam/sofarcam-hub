@@ -21,6 +21,13 @@
    (big text settings, long content) without anything getting cut off. */
 :root:has(.t:not(.t--simple)) { scroll-snap-type: y proximity; }
 .t :focus-visible { outline: 3px solid var(--t-focus); outline-offset: 3px; }
+/* No double-tap zoom delay; the grey tap flash is replaced by each control's own pressed state */
+.t a, .t button { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+.t-skip {
+  position: fixed; top: 8px; left: 8px; z-index: 40; transform: translateY(-160%);
+  padding: 10px 16px; border-radius: 999px; background: #fff; color: var(--t-ink); font-weight: 700;
+}
+.t-skip:focus-visible { transform: none; outline-color: var(--t-cobalt); }
 
 /* Header: Stories-style progress, who you're looking at, and the menu */
 .t-top {
@@ -49,11 +56,14 @@
 .t-where { font-size: 13px; opacity: 0.85; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .t-menu-btn {
   min-height: 40px; padding: 0 16px; border: 0; border-radius: 999px;
-  background: rgba(255, 255, 255, 0.18); color: inherit;
+  /* Dark fill keeps the label readable over light photos; the ring keeps the pill visible on dark ones */
+  background: rgba(0, 0, 0, 0.38); box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.6); color: inherit;
   font: inherit; font-weight: 700; font-size: 15px; cursor: pointer;
 }
-.t--light-top .t-menu-btn { background: #eeeef1; }
-.t--end .t-menu-btn { background: #fff; color: var(--t-cobalt-deep); }
+.t-menu-btn:hover { background: rgba(0, 0, 0, 0.55); }
+.t--light-top .t-menu-btn { background: #eeeef1; box-shadow: none; }
+.t--light-top .t-menu-btn:hover { background: #e0e0e5; }
+.t--end .t-menu-btn { background: #fff; box-shadow: none; color: var(--t-cobalt-deep); }
 
 /* Chapters: at least one screen tall, taller when the content needs it */
 .t-ch {
@@ -108,6 +118,14 @@
 .t-btn--small { min-height: 40px; padding: 0 16px; font-size: 15px; }
 .t-btn--wide { width: 100%; margin-top: 20px; }
 .t-btn--soon { background: rgba(255, 255, 255, 0.14); color: #fff; cursor: default; }
+.t-btn { transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease; }
+.t-btn:hover { background: var(--t-cobalt-deep); }
+.t-btn--ghost:hover { background: rgba(255, 255, 255, 0.14); }
+.t-btn--white:hover { background: #e6eaff; }
+.t-btn--outline:hover { background: rgba(127, 127, 127, 0.14); }
+.t-btn--soon:hover { background: rgba(255, 255, 255, 0.14); }
+.t-btn:active, .t-round:active:not(:disabled) { transform: scale(0.97); }
+.t-link:hover { text-decoration-thickness: 3px; }
 .t-link { color: inherit; font-weight: 700; text-decoration: underline; text-underline-offset: 4px; }
 .t-ch--light .t-link { color: var(--t-cobalt-deep); }
 
@@ -123,6 +141,7 @@
   border: 1.5px solid currentColor; background: transparent; color: inherit;
   font-size: 22px; line-height: 1; cursor: pointer;
 }
+.t-round:hover:not(:disabled) { background: rgba(127, 127, 127, 0.16); }
 .t-round:disabled { opacity: 0.3; cursor: default; }
 
 /* Gallery walls (from the gallery walk): one eye line, next work peeking in */
@@ -135,6 +154,8 @@
 .t-wall::-webkit-scrollbar, .t-timeline::-webkit-scrollbar { display: none; }
 .t-work { flex: none; scroll-snap-align: start; }
 .t-frame { display: block; padding: 0; border: 0; background: none; cursor: zoom-in; }
+.t-frame img { transition: opacity 0.2s ease; }
+.t-frame:hover img { opacity: 0.88; }
 .t-frame img { display: block; height: min(46svh, 440px); width: auto; }
 .t-work--wide .t-frame img { height: auto; width: min(86vw, 640px); }
 .t-label { display: flex; flex-direction: column; margin-top: 10px; line-height: 1.35; }
@@ -187,6 +208,8 @@ a.t-tile:hover { border-color: var(--t-ink); }
   display: flex; justify-content: space-between; gap: 12px; padding: 12px 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.45); font-weight: 700; font-size: 16px;
 }
+.t-socials a:hover { padding-left: 6px; }
+.t-socials a { transition: padding-left 0.15s ease; }
 .t-socials span { font-weight: 400; opacity: 0.9; overflow: hidden; text-overflow: ellipsis; }
 
 /* Menu: a sheet with the chapters and the most-used links */
@@ -196,7 +219,7 @@ a.t-tile:hover { border-color: var(--t-ink); }
   background: #fff; color: var(--t-ink); --t-focus: var(--t-ink);
 }
 .t-menu::backdrop { background: rgba(0, 0, 0, 0.55); }
-.t-menu-inner { padding: 18px var(--t-gutter) calc(20px + env(safe-area-inset-bottom)); max-height: 88dvh; overflow-y: auto; }
+.t-menu-inner { padding: 18px var(--t-gutter) calc(20px + env(safe-area-inset-bottom)); max-height: 88dvh; overflow-y: auto; overscroll-behavior: contain; }
 .t-menu-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .t-menu-title { font-family: var(--t-display); font-weight: 700; font-size: 20px; letter-spacing: -0.01em; }
 .t-menu-title--links { margin-top: 22px; font-size: 17px; }
@@ -206,17 +229,20 @@ a.t-tile:hover { border-color: var(--t-ink); }
   padding: 11px 2px; border: 0; border-bottom: 1px solid #ececea;
   background: none; color: inherit; font: inherit; font-size: 17px; text-align: left; cursor: pointer;
 }
+.t-menu-chapters button:hover { background: #f6f6f8; }
 .t-menu-num {
   width: 28px; height: 28px; flex: none; border-radius: 999px; display: grid; place-items: center;
   background: #f0f0f2; font-weight: 700; font-size: 14px;
 }
 .t-menu-links { list-style: none; margin-top: 6px; }
 .t-menu-links a { display: block; padding: 9px 2px; font-weight: 600; color: var(--t-cobalt-deep); text-decoration: underline; text-underline-offset: 3px; }
+.t-menu-links a:hover, .t-simple a:hover { text-decoration-thickness: 2px; }
 
 /* Lightbox: the photo big, with how it was shot */
 .t-lightbox {
   width: 100%; height: 100%; max-width: 100vw; max-height: 100dvh; margin: 0;
   border: 0; padding: 0; background: #0d0d10; color: #fff;
+  overscroll-behavior: contain;
 }
 .t-lightbox::backdrop { background: #0d0d10; }
 .t-lightbox-inner {
@@ -234,7 +260,7 @@ a.t-tile:hover { border-color: var(--t-ink); }
 /* Simple page: the same content, calm and plain */
 .t--simple { background: #fff; color: var(--t-ink); --t-focus: var(--t-ink); }
 .t--simple .t-top { position: sticky; background: #fff; color: var(--t-ink); padding-bottom: 8px; box-shadow: 0 1px 0 var(--t-rule); }
-.t--simple .t-menu-btn { background: #eeeef1; }
+.t--simple .t-menu-btn { background: #eeeef1; box-shadow: none; }
 .t-simple { max-width: 640px; margin: 0 auto; padding: 24px var(--t-gutter) 64px; }
 .t-simple h1, .t-simple h2 { font-family: var(--t-display); letter-spacing: -0.02em; line-height: 1.15; }
 .t-simple h1 { margin-top: 24px; font-size: 36px; }
@@ -258,5 +284,6 @@ a.t-tile:hover { border-color: var(--t-ink); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .t-progress button::before { transition: none; }
+  .t-progress button::before, .t-btn, .t-frame img, .t-socials a { transition: none; }
+  .t-btn:active, .t-round:active:not(:disabled) { transform: none; }
 }

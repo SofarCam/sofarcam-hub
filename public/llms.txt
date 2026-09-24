@@ -1,0 +1,36 @@
+# Cam Currence
+
+> Cam Currence (Cameron Currence, also known as Seven) is a photographer and AI engineer in Charlotte, North Carolina. Cam has photographed people in Charlotte for more than 8 years and builds AI agents and tools on Claude.
+
+## Photography
+
+- Portraits, fashion, and creative studio work, plus proposals, graduations, maternity, and other big days.
+- Style, in Cam's words: "Bold, warm, and editorial. I love golden hour light, real moments, and shots that feel like a movie still."
+- Portfolio and bookings: https://shotbyseven.com
+- Photography Instagram: https://instagram.com/shotbyseven777
+
+## AI journey
+
+- 2016: Sold at Adidas and started a first online store, Y EverStop, and ran all of its marketing.
+- 2022: Graduated from North Carolina A&T State University with a B.S. in Business, Entrepreneurship.
+- 2023: Started FrontDeskLife, fitting AI tools into how small businesses already work.
+- 2025: Built clawdis, an AI agent on Claude that runs day-to-day business work from a Telegram chat.
+- 2025: Built CreatorGrowthAI, which audits social media profiles, scores them, and says what to fix.
+- 2026: Launched SofarContent's free writing tools and plain-English guides to Claude.
+- 2026: Opened a free sports picks chat on Telegram (21+, only where sports betting is legal).
+
+## Projects
+
+- [SofarContent](https://sofarcam.vercel.app): free AI tools that write hooks, captions, and post ideas.
+- [Claude guides](https://sofarcam.vercel.app/guides): free, plain-English guides to using AI every day.
+- [SofarSeven AI](https://discord.gg/sofarseven): Cam's AI community on Discord.
+- [FrontDeskLife](https://frontdesklife.com): AI set up inside small businesses.
+- [clawdis on GitHub](https://github.com/sofarcam): an AI agent that runs business work from Telegram.
+
+## Contact
+
+- Hire Cam: https://www.upwork.com/freelancers/~01c75936d92f32b5de
+- Email: shotbyseven@gmail.com
+- Instagram: https://instagram.com/sofar.cam
+- YouTube: https://youtube.com/sofarcam
+- LinkedIn: https://www.linkedin.com/in/cameroncurrence
