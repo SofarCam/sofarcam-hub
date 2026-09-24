@@ -15,7 +15,7 @@ Pick-up notes for the next session. Delete this file once the page is live and t
 - `src/tour/Tour.jsx` and `tour.css`: the Stories-style tour. Chapters are full-screen sections, each with its own link (`/#portraits`, `/#moments`, `/#journey`, `/#built`, `/#picks`, `/#connect`). The address updates as you scroll. There's also a "simple page" mode, a menu sheet and a photo lightbox.
 - **Prerendering:** `npm run build` renders the page to HTML (`src/entry-server.jsx` + `scripts/prerender.mjs`), and `src/main.jsx` hydrates it. That's what lets crawlers and AI bots read the page. Keep first render free of `window` reads, or hydration breaks.
 - **Photos:** `public/photos/{slug}-720.webp` and `-1400.webp`, registered in `PHOTOS` in `content.js` with size, alt text and camera data.
-- **Brand:** `brand/`. The board (`brand-board.png`, source `board.html`) and the 7-blade aperture mark as SVGs. It's a proposal: the site's favicon is still the "C" square until Cam picks the aperture.
+- **Brand:** `brand/`. The board (`brand-board.png`, source `board.html`) and the 7-blade aperture mark as SVGs. The aperture is now the favicon (`public/favicon.svg`), the iPhone home-screen icon (`public/apple-touch-icon.png`) and part of the link preview (`public/og.jpg`, source `brand/og.html`). Re-render the preview image with Playwright if the photo changes.
 
 ## Checks before pushing
 
@@ -29,8 +29,7 @@ Pick-up notes for the next session. Delete this file once the page is live and t
 3. New photos in `photo-inbox/`. For each one: make webp at 720 and 1400, read the camera data, write title and alt text, and swap the slugs in `ROOMS`. Cam wants photos not used on shotbyseven.com.
 4. Video clips from the Google Drive content folder. The Drive tool couldn't download them, so Cam needs to share them another way.
 5. Confirm the AI journey wording, and that naming "clawdis" publicly is OK.
-6. Whether the brand board's aperture mark should replace the favicon and OG image.
-7. The go-ahead to merge to `main` (go live).
+6. The go-ahead to merge to `main` (go live).
 
 ## Cam's side (not code)
 
