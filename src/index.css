@@ -18,20 +18,3 @@
     }
   }
 }
-
-/* Draft picker (temporary, only on the preview) */
-.chooser {
-  max-width: 640px; margin: 0 auto; padding: 48px 20px 64px;
-  font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: #111; background: #fff;
-}
-.chooser h1 { font-size: 32px; line-height: 1.15; }
-.chooser-lede { margin-top: 10px; font-size: 17px; line-height: 1.5; color: #444; }
-.chooser ul { list-style: none; margin-top: 28px; display: grid; gap: 14px; }
-.chooser-card {
-  display: grid; grid-template-columns: 96px 1fr; gap: 16px; align-items: center;
-  padding: 12px; border: 1.5px solid #ddd; border-radius: 16px;
-}
-.chooser-card:hover { border-color: #111; }
-.chooser-card img { width: 96px; height: 120px; object-fit: cover; border-radius: 10px; }
-.chooser-card strong { display: block; font-size: 19px; }
-.chooser-card span span { display: block; margin-top: 4px; font-size: 15px; line-height: 1.45; color: #444; }

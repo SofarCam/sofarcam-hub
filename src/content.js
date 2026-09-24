@@ -1,8 +1,8 @@
-// Everything the drafts say about Cam, in one place. Facts come from shotbyseven.com
-// (session prices, turnaround, style) and the existing bio links.
+// Everything the bio page says about Cam, in one place. Facts come from Cam's resume, the
+// SofarSeven sports picks plan, shotbyseven.com, and the existing bio links.
 
 export const LINKS = {
-  book: 'https://shotbyseven.com',
+  photography: 'https://shotbyseven.com',
   upwork: 'https://www.upwork.com/freelancers/~01c75936d92f32b5de',
   email: 'shotbyseven@gmail.com',
   tools: 'https://sofarcam.vercel.app',
@@ -11,6 +11,11 @@ export const LINKS = {
   instagram: 'https://instagram.com/sofar.cam',
   photoInstagram: 'https://instagram.com/shotbyseven777',
   youtube: 'https://youtube.com/sofarcam',
+  linkedin: 'https://www.linkedin.com/in/cameroncurrence',
+  github: 'https://github.com/sofarcam',
+  frontdesklife: 'https://frontdesklife.com',
+  // Telegram invite for the sports picks chat. Until it's set, the page says the link is coming soon.
+  picksChat: null,
 }
 
 // Cam's own words from the shotbyseven.com FAQ
@@ -18,36 +23,59 @@ export const STYLE_QUOTE =
   'Bold, warm, and editorial. I love golden hour light, real moments, and shots that feel like a movie still.'
 
 export const BIO = [
-  'I’m Cameron Currence, and behind the camera I go by Seven. For more than eight years I’ve photographed people in Charlotte: portraits, fashion, and creative studio work, from graduations and maternity sessions to proposals and full editorials.',
-  'When I’m not shooting, I build free tools for creators and write plain-English guides to AI.',
+  'I’m Cameron Currence, and behind the camera I go by Seven. I’ve photographed people in Charlotte for more than eight years: portraits, fashion, and creative studio work.',
+  'I’m also an AI engineer. I build AI agents and tools on Claude, and I share what I learn in free guides and a community on Discord.',
 ]
 
-export const SESSIONS = [
-  { id: 'mini', name: 'Mini session', detail: 'One focused hour', price: 'from $75', cta: 'Book a mini session' },
-  { id: 'portrait', name: 'Portraits', detail: 'Couples, lifestyle, just you', price: 'from $100', cta: 'Book a portrait session' },
-  { id: 'headshot', name: 'Headshots', detail: 'Delivered within 24 hours', price: 'from $150', cta: 'Book headshots' },
-  { id: 'graduation', name: 'Graduation', detail: 'Cap, gown, and the creative ones', price: 'from $250', cta: 'Book graduation photos' },
-  { id: 'maternity', name: 'Maternity and family', detail: 'Studio or outdoors', price: 'from $250', cta: 'Book maternity photos' },
-  { id: '777', name: 'The 777 Package', detail: '90 minutes, 77 images, 7 retouched', price: '$777', cta: 'Book The 777 Package' },
+// Gallery rooms. When the new photo folder is in, swap the slugs here.
+export const ROOMS = [
+  {
+    id: 'portraits', name: 'Portraits', note: 'People on a good day, as themselves.',
+    photos: ['redhair', 'bookshelf', 'velvet', 'flowers', 'purple', 'bw-couch'],
+    more: { label: 'More on shotbyseven.com', href: LINKS.photography },
+  },
+  {
+    id: 'moments', name: 'Moments', note: 'Proposals, graduations, and the days you want to keep.',
+    photos: ['proposal', 'ring', 'couple-gold', 'grad', 'maternity', 'camaro'],
+    more: { label: 'Follow @shotbyseven777', href: LINKS.photoInstagram },
+  },
 ]
 
-export const STEPS = [
-  { title: 'Tell me your idea', text: 'Pick a session and share your dates and the vibe you want.' },
-  { title: 'We shoot', text: 'Bring a friend or partner if you like. Plus-ones are free.' },
-  { title: 'Get your photos', text: 'A sneak peek in 48 to 72 hours, your full gallery within a week.' },
+// From Cam's resume. It's a real sequence, so the page shows it in order.
+export const JOURNEY = [
+  { year: '2016', title: 'On the sales floor', text: 'Sold at Adidas and started my first online store, Y EverStop, running all of its marketing myself.' },
+  { year: '2022', title: 'Business degree', text: 'Graduated from North Carolina A&T with a B.S. in Business, Entrepreneurship.' },
+  { year: '2023', title: 'FrontDeskLife', text: 'Started fitting AI tools into how small businesses already work, and automating the repetitive parts.' },
+  { year: '2025', title: 'clawdis', text: 'Built an AI agent on Claude that runs day-to-day business work from a Telegram chat, with a daily spending cap so it can run on its own.' },
+  { year: '2025', title: 'CreatorGrowthAI', text: 'Built a tool that audits social media profiles, scores them, and says what to fix.' },
+  { year: '2026', title: 'Free for everyone', text: 'Launched SofarContent’s free writing tools and plain-English guides to Claude.' },
+  { year: '2026', title: 'Sports picks', text: 'Opened a free sports picks chat on Telegram.' },
 ]
 
 export const PROJECTS = [
-  { id: 'studio', name: 'Shot by Seven', text: 'My portrait studio in Charlotte.', href: LINKS.book },
-  { id: 'tools', name: 'SofarContent', text: 'Free tools that write hooks, captions, and post ideas.', href: LINKS.tools },
-  { id: 'guides', name: 'Claude guides', text: 'Free, plain-English guides to using AI every day.', href: LINKS.guides },
-  { id: 'discord', name: 'SofarSeven AI', text: 'My AI community on Discord.', href: LINKS.discord },
+  { id: 'clawdis', name: 'clawdis', text: 'An AI agent that runs day-to-day business work from Telegram.', href: LINKS.github, cta: 'My GitHub' },
+  { id: 'creatorgrowth', name: 'CreatorGrowthAI', text: 'Audits a social media profile, scores it, and says what to fix.', href: null },
+  { id: 'genius', name: 'Genius Curriculum', text: 'Learn AI with a live Claude playground, quizzes, and an AI tutor.', href: null },
+  { id: 'tools', name: 'SofarContent', text: 'Free tools that write hooks, captions, and post ideas.', href: LINKS.tools, cta: 'Try it free' },
+  { id: 'guides', name: 'Claude guides', text: 'Free, plain-English guides to using AI every day.', href: LINKS.guides, cta: 'Read them' },
+  { id: 'discord', name: 'SofarSeven AI', text: 'My AI community on Discord.', href: LINKS.discord, cta: 'Join' },
+  { id: 'frontdesk', name: 'FrontDeskLife', text: 'AI set up inside small businesses.', href: LINKS.frontdesklife, cta: 'Visit' },
 ]
+
+// From the SofarSeven sports picks plan, including its responsible-gambling note.
+export const PICKS_CHAT = {
+  where: 'Telegram',
+  href: LINKS.picksChat,
+  points: ['Daily picks with the reasoning behind them', 'A running record of every pick', 'Answers to your betting questions'],
+  disclaimer: '21+ and only where sports betting is legal. Picks are for entertainment, not financial advice. If gambling stops being fun, call 1-800-GAMBLER.',
+}
 
 export const SOCIALS = [
   { name: 'Instagram', handle: '@sofar.cam', href: LINKS.instagram },
-  { name: 'Photography on Instagram', handle: '@shotbyseven777', href: LINKS.photoInstagram },
+  { name: 'Photography', handle: '@shotbyseven777', href: LINKS.photoInstagram },
   { name: 'YouTube', handle: 'sofarcam', href: LINKS.youtube },
+  { name: 'LinkedIn', handle: 'cameroncurrence', href: LINKS.linkedin },
+  { name: 'GitHub', handle: 'sofarcam', href: LINKS.github },
 ]
 
 // Camera data comes from each file's EXIF. Photos without it have exif: null.
@@ -140,6 +168,11 @@ export const PHOTOS = {
   arch: {
     w: 1400, h: 945, title: 'Leap',
     alt: 'Black and white silhouette of a person leaping through a stone archway',
+    exif: null,
+  },
+  athlete: {
+    w: 1400, h: 933, title: 'Warm-up',
+    alt: 'Athlete stretching low on a track at night',
     exif: null,
   },
   'brown-suit': {
