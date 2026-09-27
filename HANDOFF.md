@@ -21,6 +21,8 @@ Pick-up notes for the next session. Delete this file once the page is live and t
 
 - `npm run lint`, then `npm run build` (must print `prerender: wrote dist/index.html`).
 - With `npx vite preview`, run a Playwright check (Chromium at `/opt/pw-browsers/chromium`). Look for no console or hydration errors, the header label changing per chapter, the lightbox and menu opening, no sideways scrolling at 390px, and nothing clipped at 150% text size.
+- Run axe-core (`npm i axe-core` in a scratch folder, inject it with Playwright) on the tour, the open menu, the open lightbox, the simple page and `/404.html`. All five were clean on 2026-09-27.
+- Unknown paths get the real `public/404.html`; there's no catch-all rewrite. Don't add one back, or every typo'd link shows the page again as a soft 404.
 
 ## Waiting on Cam
 

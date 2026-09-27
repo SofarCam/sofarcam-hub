@@ -54,9 +54,17 @@ function Track({ as, className, label, noun, count, footer, children }) {
     el.scrollTo({ left: target.offsetLeft - el.children[0].offsetLeft, behavior: reducedMotion() ? 'auto' : 'smooth' })
   }
 
+  // Snap scrolling swallows the browser's small arrow-key steps, so move a whole item instead
+  function onKeyDown(e) {
+    if (e.target !== e.currentTarget) return
+    if (e.key === 'ArrowRight') { e.preventDefault(); show(index + 1) }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); show(index - 1) }
+  }
+
   return (
     <>
-      <List ref={ref} className={className} onScroll={onScroll} data-no-advance aria-label={label}>
+      {/* Focusable so keyboard users can reach it and step through with the arrow keys */}
+      <List ref={ref} className={className} onScroll={onScroll} onKeyDown={onKeyDown} data-no-advance aria-label={label} tabIndex={0}>
         {children}
       </List>
       <div className="t-foot" data-no-advance>

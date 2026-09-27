@@ -40,9 +40,9 @@
 .t--light-top { --t-focus: var(--t-ink); }
 .t-progress { list-style: none; display: flex; gap: 4px; }
 .t-progress li { flex: 1; }
-.t-progress button { display: block; width: 100%; padding: 8px 0; border: 0; background: none; cursor: pointer; }
+.t-progress button { display: flex; align-items: center; width: 100%; min-height: 24px; padding: 0; border: 0; background: none; cursor: pointer; }
 .t-progress button::before {
-  content: ""; display: block; height: 3px; border-radius: 3px;
+  content: ""; flex: 1; height: 3px; border-radius: 3px;
   background: rgba(255, 255, 255, 0.38); transition: background-color 0.3s ease;
 }
 .t-progress button.is-seen::before { background: #fff; }
