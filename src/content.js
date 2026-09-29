@@ -32,7 +32,7 @@ export const ROOMS = [
   {
     id: 'portraits', name: 'Portraits', note: 'People on a good day, as themselves.',
     photos: ['redhair', 'bookshelf', 'velvet', 'flowers', 'purple', 'bw-couch'],
-    more: { label: 'More on shotbyseven.com', href: LINKS.photography },
+    more: { label: 'Book a session on shotbyseven.com', href: LINKS.photography },
   },
   {
     id: 'moments', name: 'Moments', note: 'Proposals, graduations, and the days you want to keep.',
@@ -52,14 +52,23 @@ export const JOURNEY = [
   { year: '2026', title: 'Sports picks', text: 'Opened a free sports picks chat on Telegram.' },
 ]
 
+// The free things lead, since that's where the funnel's AI path sends people.
 export const PROJECTS = [
-  { id: 'clawdis', name: 'clawdis', text: 'An AI agent that runs day-to-day business work from Telegram.', href: LINKS.github, cta: 'My GitHub' },
-  { id: 'creatorgrowth', name: 'CreatorGrowthAI', text: 'Audits a social media profile, scores it, and says what to fix.', href: null },
-  { id: 'genius', name: 'Genius Curriculum', text: 'Learn AI with a live Claude playground, quizzes, and an AI tutor.', href: null },
   { id: 'tools', name: 'SofarContent', text: 'Free tools that write hooks, captions, and post ideas.', href: LINKS.tools, cta: 'Try it free' },
   { id: 'guides', name: 'Claude guides', text: 'Free, plain-English guides to using AI every day.', href: LINKS.guides, cta: 'Read them' },
   { id: 'discord', name: 'SofarSeven AI', text: 'My AI community on Discord.', href: LINKS.discord, cta: 'Join' },
+  { id: 'clawdis', name: 'clawdis', text: 'An AI agent that runs day-to-day business work from Telegram.', href: LINKS.github, cta: 'My GitHub' },
   { id: 'frontdesk', name: 'FrontDeskLife', text: 'AI set up inside small businesses.', href: LINKS.frontdesklife, cta: 'Visit' },
+  { id: 'creatorgrowth', name: 'CreatorGrowthAI', text: 'Audits a social media profile, scores it, and says what to fix.', href: null },
+  { id: 'genius', name: 'Genius Curriculum', text: 'Learn AI with a live Claude playground, quizzes, and an AI tutor.', href: null },
+]
+
+// The first screen asks what brings you here. Each answer jumps to the chapter
+// (by id) that ends in that business's one next step.
+export const FUNNEL = [
+  { id: 'photos', label: 'Booking a photo shoot', to: 'portraits' },
+  { id: 'ai', label: 'Free AI tools and community', to: 'built' },
+  { id: 'picks', label: 'Free sports picks', to: 'picks' },
 ]
 
 // From the SofarSeven sports picks plan, including its responsible-gambling note.

@@ -44,6 +44,7 @@ Pick-up notes for the next session. Delete this file once the page is live and t
 - Look: the merged B+C tour. Ink, cobalt and white, Unbounded + Hanken Grotesk, first-person voice, sentence case. minimalist-ui was skipped because it conflicts with this.
 - No photography pricing on the page.
 - Main button stays "Take the tour". "See all links" sits next to it.
+- First screen is a funnel: "What brings you here?" with three paths (`FUNNEL` in `content.js`): photo shoot → Portraits (ends in "Book a session"), free AI tools → Things I've built (free tools listed first), sports picks → picks chat. FrontDeskLife and clawdis stay in the tour but aren't funnel paths.
 - Picks chat keeps the 21+ and 1-800-GAMBLER note.
 - Cam asked for short, compressed replies ("caveman" mode).
 

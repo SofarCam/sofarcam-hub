@@ -3,7 +3,7 @@ import '@fontsource-variable/unbounded'
 import '@fontsource-variable/hanken-grotesk'
 import './tour.css'
 import Photo from '../components/Photo'
-import { BIO, JOURNEY, LINKS, PHOTOS, PICKS_CHAT, PROJECTS, ROOMS, SOCIALS, STYLE_QUOTE } from '../content'
+import { BIO, FUNNEL, JOURNEY, LINKS, PHOTOS, PICKS_CHAT, PROJECTS, ROOMS, SOCIALS, STYLE_QUOTE } from '../content'
 
 const CHAPTERS = [
   { id: 'hello', label: 'Hello', theme: 'dark' },
@@ -228,6 +228,12 @@ function SimplePage({ onTour }) {
       <button type="button" className="t-btn t-btn--outline" onClick={onTour}>Back to the tour</button>
       <h1>Hey, I’m Cam Currence.</h1>
       <p>Photographer and AI engineer in Charlotte, NC. You might know me as Seven.</p>
+      <h2>What brings you here?</h2>
+      <ul>
+        <li><a href={LINKS.photography}>Book a photo shoot</a></li>
+        <li><a href={LINKS.tools}>Try the free AI tools</a>, <a href={LINKS.guides}>read the guides</a>, or <a href={LINKS.discord}>join the Discord</a></li>
+        <li>{PICKS_CHAT.href ? <a href={PICKS_CHAT.href}>Join the free sports picks chat</a> : 'Free sports picks chat (link coming soon)'}</li>
+      </ul>
       <h2>About me</h2>
       {BIO.map((b) => <p key={b}>{b}</p>)}
       <blockquote>{STYLE_QUOTE}</blockquote>
@@ -305,6 +311,10 @@ export default function Tour() {
     el?.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth', block: 'start' })
   }
 
+  function goTo(id) {
+    go(CHAPTERS.findIndex((c) => c.id === id))
+  }
+
   function toggleSimple() {
     setMenuOpen(false)
     setSimple((v) => !v)
@@ -380,6 +390,14 @@ export default function Tour() {
             <div className="t-copy">
               <h1 className="t-title t-title--hero">Hey, I’m Cam Currence.</h1>
               <p className="t-text">Photographer and AI engineer in Charlotte, NC. You might know me as Seven.</p>
+              <h2 className="t-ask" id="t-ask">What brings you here?</h2>
+              <ul className="t-choices" aria-labelledby="t-ask">
+                {FUNNEL.map((f) => (
+                  <li key={f.id}>
+                    <a className="t-choice" href={`#${f.to}`} onClick={(e) => { e.preventDefault(); goTo(f.to) }}>{f.label}</a>
+                  </li>
+                ))}
+              </ul>
               <div className="t-actions">
                 <button type="button" className="t-btn" onClick={() => go(1)}>Take the tour</button>
                 <button type="button" className="t-btn t-btn--ghost" onClick={() => setMenuOpen(true)}>See all links</button>
